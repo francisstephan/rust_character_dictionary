@@ -1,0 +1,135 @@
+body {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 28px;
+    padding: 20px 10px 20px 10px;
+    background-color: #f4b43e;
+    color: white;
+}
+
+#logo {
+    margin-top: -20px;
+    float: left;
+    height: 60px;
+}
+
+h1.title {
+    padding-top: 50px;
+}
+
+#layout-wrapper {
+    padding-left: 10px;
+    padding-bottom: 90px;
+}
+
+ul#menu {
+    margin-top: -5px;
+    float: left;
+}
+
+li.menuitem {
+    display: block;
+    text-align: center;
+    margin: 10px 4px;
+    float: left;
+    height: 20px;
+    padding: 0 8px 0 8px;
+    background: #888888;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-right: 2px solid black;
+    border-bottom: 1px solid black;
+}
+
+button.menubouton {
+    margin: 20 px;
+    background-color: darkgreen;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+table,
+tr,
+td {
+    border: 1px solid;
+}
+table {
+    border-collapse: collapse;
+    margin-left: 50px;
+    margin-top: 20px;
+}
+td {
+    padding-left: 4px;
+    padding-right: 4px;
+    text-align: center;
+    font-size: 18px;
+}
+
+form.multi {
+    /* https://www.digitalocean.com/community/tutorials/how-to-style-common-form-elements-with-css */
+    margin-left: 10%;
+    width: 40%;
+    box-sizing: border-box;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: hsl(0, 0%, 90%);
+    border: 4px solid hsl(0, 0%, 60%);
+    display: grid;
+    grid-template-columns: 1Fr;
+    gap: 0;
+}
+
+button.formbut {
+    margin-top: 20px;
+    background-color: #a0522d;
+    color: white;
+    width: 100%;
+    height: 30px;
+    width: 70%;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 15%;
+}
+
+p#formhead {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration-line: underline;
+}
+
+span#viewcar {
+    font-size: 24px;
+}
+
+input:invalid {
+    border: 2px dashed red;
+}
+
+input:valid {
+    border: 1px solid black;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 70px;
+    width: 100%;
+    background: #888;
+    color: white;
+    padding: 10px 0 0 100px;
+    font-size: 16px;
+}
+#footer a {
+    color: white;
+}

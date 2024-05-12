@@ -1,0 +1,58 @@
+<div id="content">
+    {% if len == 0 %} No entry with id = {{id}} {% else %}
+    <form
+        class="multi"
+        hx-put="/doupdate"
+        hx-target="#content"
+        hx-swap="innerHTML"
+    >
+        <p id="formhead">Update dictionary entry :</p>
+        <label for="id">Id:</label>
+        <input id="id" name="id" type="text" readonly value="{{zi.id}}" /><br />
+        <label for="pinyin_ton"
+            >Pinyin+tone (using pattern ^[a-z,ü]+[0-4]) :</label
+        >
+        <input
+            id="pinyin_ton"
+            name="pinyin_ton"
+            type="text"
+            pattern="^[a-z,ü]+[0-4]"
+            value="{{zi.pinyin_ton}}"
+        /><br />
+        <label for="unicode">Unicode (hexa, readonly):</label>
+        <input
+            id="unicode"
+            name="unicode"
+            type="text"
+            readonly
+            value="{{zi.unicode}}"
+        />
+        <span id="viewcar">{{zi.hanzi}}</span><br />
+        <label for="sens">Meaning:</label>
+        <input id="sens" name="sens" type="text" value="{{zi.sens}}" /><br />
+        <button class="formbut" type="submit">Submit</button>
+        <button
+            class="formbut"
+            hx-get="/remove"
+            hx-target="#content"
+            hx-swap="innerHTML"
+        >
+            Cancel
+        </button>
+    </form>
+    <script>
+        function displayChar() {
+            var s = document.getElementById("unicode");
+            document.getElementById("viewcar").innerHTML = String.fromCharCode(
+                parseInt(s.value, 16),
+            );
+        }
+        document
+            .getElementById("unicode")
+            .addEventListener("keyup", displayChar);
+        document
+            .getElementById("unicode")
+            .addEventListener("change", displayChar);
+    </script>
+    {% endif %}
+</div>

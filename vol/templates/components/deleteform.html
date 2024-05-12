@@ -1,0 +1,16 @@
+<div id="content">
+    <!-- <form -->
+    {% if len == 0 %}
+    No entry for id = {{id}}. No entry deleted.
+    {% else %}
+    Please confirm you want to delete the following entry:
+    <table>
+      <tr><td>Id</td><td> Pinyin </td><td>Unicode</td><td> Character    </td><td>Translation</td></tr>
+      <tr><td>{{zi.id}}</td><td>{{zi.pinyin_ton}}</td><td>{{zi.unicode}} </td><td>{{zi.hanzi}}</td><td>{{zi.sens}}</td></tr>
+    </table>
+    <p style="padding: 10px 0 0 20px;">
+    <button class="menubouton" hx-delete="/dodelete/{{id}}"    hx-target="#content" hx-swap="innerHTML">Delete entry</button>
+    <button class="menubouton" hx-get="/remove" hx-target="#content" hx-swap="innerHTML">Cancel</button>
+    </p>
+    {% endif %}
+</div>
