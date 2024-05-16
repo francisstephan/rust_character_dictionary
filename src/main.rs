@@ -35,7 +35,6 @@ async fn main() -> std::io::Result<()> {
             .app_data(Data::new(AppState { db: pool.clone() }))
             .wrap(Logger::new("%U %r %s"))
             .service(handlers::index)
-            .service(handlers::say_hello)
             .service(handlers::size)
             .service(handlers::getziform)
             .service(handlers::zilist)
@@ -55,7 +54,7 @@ async fn main() -> std::io::Result<()> {
             .service(actix_files::Files::new("/assets", "./vol/assets").show_files_listing())
         // making /assets files accessible
     })
-    .bind(("127.0.0.1", 8090))?
+    .bind(("0.0.0.0", 8090))?
     .run()
     .await
 }

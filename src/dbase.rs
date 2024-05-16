@@ -161,7 +161,7 @@ pub async fn readdic(data: &Data<AppState>, whereclause: &str) -> Vec<Zi> {
 }
 
 pub async fn list_for_zi(data: Data<AppState>, first: String) -> Vec<Zi> {
-    let whereclause = format!(" unicode = '{}'", &first);
+    let whereclause = format!(" unicode = '{}' ORDER BY pinyin_ton", &first);
     readdic(&data, &whereclause).await
 }
 
@@ -170,10 +170,10 @@ pub async fn list_for_py(data: Data<AppState>, first: String) -> Vec<Zi> {
     let cond = matches!(last_char, '0'..='4');
     let whereclause = if !cond {
         // no tone given: check all tones 0 to 4
-        format!(" pinyin_ton = '{}0' OR pinyin_ton = '{}1' OR pinyin_ton = '{}2' OR pinyin_ton = '{}3' OR pinyin_ton = '{}4' ORDER BY pinyin_ton"
+        format!(" pinyin_ton = '{}0' OR pinyin_ton = '{}1' OR pinyin_ton = '{}2' OR pinyin_ton = '{}3' OR pinyin_ton = '{}4' ORDER BY pinyin_ton, unicode"
             , &first, &first, &first, &first, &first)
     } else {
-        format!(" pinyin_ton = '{}'", &first)
+        format!(" pinyin_ton = '{}' ORDER BY unicode", &first)
     };
     readdic(&data, &whereclause).await
 }

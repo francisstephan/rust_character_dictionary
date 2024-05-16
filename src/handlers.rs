@@ -1,5 +1,5 @@
 use crate::AppState;
-use actix_web::{delete, get, post, put, web, web::Data, HttpResponse, Responder};
+use actix_web::{delete, get, post, put, web, web::Data, HttpRequest, HttpResponse, Responder};
 use std::fs;
 use tera::{Context, Tera};
 
@@ -7,9 +7,14 @@ use crate::dbase;
 use crate::forms;
 
 #[get("/")]
-pub async fn index(tera: Data<Tera>) -> impl Responder {
+pub async fn index(req: HttpRequest, tera: Data<Tera>) -> impl Responder {
+    let ipaddr = actix_remote_ip::get_remote_ip(&req);
     let ctx = Context::new();
-    HttpResponse::Ok().body(tera.render("index.html", &ctx).unwrap())
+    if ipaddr.is_loopback() {
+        HttpResponse::Ok().body(tera.render("index_local.html", &ctx).unwrap())
+    } else {
+        HttpResponse::Ok().body(tera.render("index.html", &ctx).unwrap())
+    }
 }
 
 #[get("/size")]
@@ -208,10 +213,4 @@ pub async fn listdic(tera: Data<Tera>, data: web::Data<AppState>) -> impl Respon
     ctx.insert("dico", &disp);
     ctx.insert("diclen", &disp.len());
     HttpResponse::Ok().body(tera.render("components/zilist.html", &ctx).unwrap())
-}
-
-#[get("/hello/{name}")]
-pub async fn say_hello(path: web::Path<String>) -> impl Responder {
-    let resp = format!("hello, {}!!", path.into_inner());
-    HttpResponse::Ok().body(resp)
 }

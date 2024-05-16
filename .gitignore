@@ -1,4 +1,8 @@
 /target
 zed_development.md
 Cargo.lock
+.DS_Store
+/.archive
+.gitignore
+.dockerignore
 
