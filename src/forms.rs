@@ -32,7 +32,7 @@ pub fn addziform() -> String {
 		  <label for="pinyin_ton">Pinyin+tone (using pattern ^[a-z,ü]+[0-4]) :</label>
 		  <input id="pinyin_ton" name="pinyin_ton" type="text" required pattern="^[a-z,ü]+[0-4]" autofocus><br />
 		  <label for="unicode">Unicode (hexa, using pattern ^[0-9,A-F]{4}):</label>
-		  <input id="unicode" name="unicode" type="text" required pattern="^[0-9,A-F]{4}" minlength="4" maxlength="4">
+		  <input id="unicode" name="unicode" type="text" required pattern="^[0-9,A-F]{4}">
 				<span id="viewcar"> </span><br />
 		  <label for="sens">Meaning:</label>
 		  <input id="sens" name="sens" type="text" required minlength="2" maxlength="60"><br />

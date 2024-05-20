@@ -83,7 +83,9 @@ pub async fn update_db(zi: Form<Idzi>, data: Data<AppState>) -> String {
     //   https://github.com/addies/rust-crud-axum-sqlx-postgresql/blob/main/src/main.rs
     let query = format!(
         "UPDATE pyhz SET pinyin_ton='{}', sens='{}' WHERE id='{}'",
-        zi.pinyin_ton, zi.sens, zi.id
+        zi.pinyin_ton,
+        ammonia::clean(&zi.sens),
+        zi.id
     );
     let result = sqlx::query(&query).execute(&data.db).await;
     match result {
@@ -117,7 +119,9 @@ pub async fn addzi_db(zi: Form<Idzi>, data: Data<AppState>) -> String {
     // 2. add zi:
     let query = format!(
         "INSERT INTO pyhz (pinyin_ton, unicode, sens) VALUES ('{}', '{}', '{}')",
-        zi.pinyin_ton, zi.unicode, zi.sens
+        zi.pinyin_ton,
+        zi.unicode,
+        ammonia::clean(&zi.sens) // sanitize zi.sens, which has no specific format
     );
     let result = sqlx::query(&query).execute(&data.db).await;
     match result {
