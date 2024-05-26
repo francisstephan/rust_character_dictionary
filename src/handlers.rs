@@ -9,12 +9,13 @@ use crate::forms;
 #[get("/")]
 pub async fn index(req: HttpRequest, tera: Data<Tera>) -> impl Responder {
     let ipaddr = actix_remote_ip::get_remote_ip(&req);
-    let ctx = Context::new();
+    let mut ctx = Context::new();
     if ipaddr.is_loopback() {
-        HttpResponse::Ok().body(tera.render("index_local.html", &ctx).unwrap())
+        ctx.insert("contenu", "");
     } else {
-        HttpResponse::Ok().body(tera.render("index.html", &ctx).unwrap())
+        ctx.insert("contenu", "Caution: all modifications to the database will be discarded at the end of the fly.io session");
     }
+    HttpResponse::Ok().body(tera.render("index.html", &ctx).unwrap())
 }
 
 #[get("/size")]

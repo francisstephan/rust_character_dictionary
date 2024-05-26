@@ -1,58 +1,99 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Rust zidian manager</title>
-        <link rel="shortcut icon" type="image/png" href="/assets/favicon.png" />
-        <link rel="stylesheet" type="text/css" href="/assets/style.css" />
-        <script type="text/javascript" src="/assets/htmx.min.js"></script>
-    </head>
+  <head>
+    <meta charset="utf-8" />
+    <title>Rust zidian manager</title>
+    <link rel="shortcut icon" type="image/png" href="/assets/favicon.png" />
+    <link rel="stylesheet" type="text/css" href="/assets/style.css" />
+    <script type="text/javascript" src="/assets/htmx.min.js"></script>
+  </head>
 
-    <body>
-    <div id=layout-wrapper>
-        {% block menu %} {% endblock menu %} {% block content %} {% endblock
-        content %}
-    </div><!-- end layout-wrapper -->
-        <div id="footer">
-	        See source code at <a href="https://github.com/francisstephan/character_dictionary_manager" target="_blank">https://github.com/francisstephan</a><br /><br />
-	        For other languages, see also <a href="https://www.eludev.fr/keyboards/" target="_blank">https://www.eludev.fr/keyboards/</a>
+  <body>
+    <div id="layout-wrapper">
+      <div id="header">
+        <div id="logo">
+          <a href="/"><img src="/assets/rust-logo.svg" height="70" width="70"/></a>
         </div>
+        <ul id="menu">
+          <li class="menuitem" hx-trigger="click" hx-get="/size" hx-target="#content" hx-swap="innerHTML">
+            Size
+          </li>
+          <li class="menuitem" hx-trigger="click" hx-get="/getziform" hx-target="#content" hx-swap="innerHTML">
+            Zi => Pinyin
+          </li>
+          <li class="menuitem" hx-trigger="click" hx-get="/getpyform" hx-target="#content" hx-swap="innerHTML">
+            Pinyin => Zi
+          </li>
+          <li class="menuitem" hx-trigger="click" hx-get="/getaddziform" hx-target="#content" hx-swap="innerHTML">
+            Add zi
+          </li>
+          <li class="menuitem" hx-trigger="click" hx-get="/getselupdate" hx-target="#content" hx-swap="innerHTML">
+            Update zi
+          </li>
+          <li class="menuitem" hx-trigger="click" hx-get="/showlast" hx-target="#content" hx-swap="innerHTML">
+            Last zi
+          </li>
+          <li class="menuitem" hx-trigger="click" hx-get="/getseldelete" hx-target="#content" hx-swap="innerHTML">
+            Delete zi
+          </li>
+          <li class="menuitem" hx-trigger="click" hx-get="/listdic" hx-target="#content" hx-swap="innerHTML">
+            List dictionary
+          </li>
+        </ul>
+      </div><!-- end header -->
+      <div style="clear: both"></div>
+    {% block content %} {% endblock content %}
+    </div><!-- end layout-wrapper -->
+    <div id="footer">
+		See source code at
+		<a href="https://github.com/francisstephan/character_dictionary_manager" target="_blank">
+			https://github.com/francisstephan</a>
+        <br /><br />
+        For other languages, see also
+	    <a href="https://www.eludev.fr/keyboards/" target="_blank">
+			https://www.eludev.fr/keyboards/</a>
+ 
+	</div><!-- end footer -->
 
-<script>
-	function shortkey(e) {
-		if(e.keyCode==80) htmx.ajax('GET', "/getpyform", {target: "#content", swap: "innerHTML"}); // key p : pinyin => zi
-	    if(e.keyCode==90) htmx.ajax('GET', "/getziform", {target: "#content", swap: "innerHTML"}); // key z : zi => pinyin
-	}
-	function esckey(e) {
-		if(e.keyCode==27) htmx.ajax('GET', "/remove", {target: "#content", swap: "innerHTML"}); // key esc : cancel form
-	}
-	function ajustkey() {
-      contenu = document.getElementById("content");
-	  // console.log("innerHTML="+contenu.innerHTML);
-	  if (contenu.innerHTML.includes("<form ")) { // if form, authorize Esc and remove z and p listeners
-		  document.body.removeEventListener("keydown", shortkey);
-		  document.body.addEventListener("keydown", esckey);
-	  }
-	  else { // if not form, remove Esc (there is nothing to cancel) and add z and p listeners
-		  document.body.addEventListener("keydown", shortkey);
-		  document.body.removeEventListener("keydown", esckey);
-	  }
-	}
-	window.onload = function() {
-	  elem = document.body
-	  elem.addEventListener("keydown", shortkey) // initially enable z and p shortcut keys
-	  elem.addEventListener("htmx:afterRequest", ajustkey) // after ajax request performed by htmx, adjust keydown listeners
-	  elem.addEventListener('htmx:afterRequest', function (evt) {
+    <script>
+      function shortkey(e) {
+        if (e.keyCode == 80)
+          htmx.ajax("GET", "/getpyform", {target: "#content", swap: "innerHTML",}); // key p : pinyin => zi
+        if (e.keyCode == 90)
+          htmx.ajax("GET", "/getziform", {target: "#content", swap: "innerHTML",}); // key z : zi => pinyin
+      }
+      function esckey(e) {
+        if (e.keyCode == 27)
+          htmx.ajax("GET", "/remove", {target: "#content", swap: "innerHTML",}); // key esc : cancel form
+      }
+      function ajustkey() {
         contenu = document.getElementById("content");
-        if (evt.detail.failed && evt.detail.xhr) {  // display error message within the document (and not only the console)
-          // Server error with response contents, equivalent to htmx:responseError
-          console.warn("Server error", evt.detail)
-          const xhr = evt.detail.xhr;
-          contenu.innerHTML = `Unexpected server error: ${xhr.status} - ${xhr.statusText}`;
+        if (contenu.innerHTML.includes("<form ")) {
+          // if form, authorize Esc and remove z and p listeners
+          document.body.removeEventListener("keydown", shortkey);
+          document.body.addEventListener("keydown", esckey);
+        } else {
+          // if not form, remove Esc (there is nothing to cancel) and add z and p listeners
+          document.body.addEventListener("keydown", shortkey);
+          document.body.removeEventListener("keydown", esckey);
         }
-      });
-	};
-
-</script>
-    </body>
+      }
+      window.onload = function () {
+        elem = document.body;
+        elem.addEventListener("keydown", shortkey); // initially enable z and p shortcut keys
+        elem.addEventListener("htmx:afterRequest", ajustkey); 
+		// after ajax request performed by htmx, adjust keydown listeners
+        elem.addEventListener("htmx:afterRequest", function (evt) {
+          contenu = document.getElementById("content");
+          if (evt.detail.failed && evt.detail.xhr) {
+            // display error message within the document (and not only the console)
+            // Server error with response contents, equivalent to htmx:responseError
+            console.warn("Server error", evt.detail);
+            const xhr = evt.detail.xhr;
+            contenu.innerHTML = `Unexpected server error: ${xhr.status} - ${xhr.statusText}`;
+          }
+        });
+      };
+    </script>
+  </body>
 </html>
