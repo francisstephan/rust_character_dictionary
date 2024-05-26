@@ -53,14 +53,13 @@ pub async fn getsize(data: Data<AppState>) -> i64 {
     result.0
 }
 
-pub async fn list_last(data: Data<AppState>) -> Vec<Zi> {
-    // https://stackoverflow.com/questions/24494182/how-to-read-the-last-record-in-sqlite-table
-    let query = "SELECT * FROM pyhz ORDER BY id DESC LIMIT 1";
+async fn doquery(query: &str, data: &Data<AppState>) -> Vec<Zi> {
     let mut disp = Vec::<Zi>::new();
     let dic = sqlx::query_as::<_, DBidzi>(&query)
         .fetch_all(&data.db)
         .await
         .unwrap();
+
     for dbidzi in dic.iter() {
         //https://stackoverflow.com/questions/69152223/unicode-codepoint-to-rust-string
         let unicodestring = dbidzi.unicode.as_str();
@@ -77,6 +76,12 @@ pub async fn list_last(data: Data<AppState>) -> Vec<Zi> {
     }
 
     disp
+}
+
+pub async fn list_last(data: Data<AppState>) -> Vec<Zi> {
+    // https://stackoverflow.com/questions/24494182/how-to-read-the-last-record-in-sqlite-table
+    let query = "SELECT * FROM pyhz ORDER BY id DESC LIMIT 1";
+    doquery(query, &data).await
 }
 
 pub async fn update_db(zi: Form<Idzi>, data: Data<AppState>) -> String {
@@ -140,28 +145,7 @@ pub async fn readdic(data: &Data<AppState>, whereclause: &str) -> Vec<Zi> {
         basequery
     };
 
-    let mut disp = Vec::<Zi>::new();
-    let dic = sqlx::query_as::<_, DBidzi>(&query)
-        .fetch_all(&data.db)
-        .await
-        .unwrap();
-
-    for dbidzi in dic.iter() {
-        //https://stackoverflow.com/questions/69152223/unicode-codepoint-to-rust-string
-        let unicodestring = dbidzi.unicode.as_str();
-        let unicode = u32::from_str_radix(unicodestring, 16).unwrap();
-        let carac = char::from_u32(unicode).unwrap();
-        let zi = Zi {
-            id: dbidzi.id,
-            pinyin_ton: dbidzi.pinyin_ton.clone(),
-            unicode: dbidzi.unicode.clone(),
-            hanzi: carac,
-            sens: dbidzi.sens.clone(),
-        };
-        disp.push(zi);
-    }
-
-    disp
+    doquery(query, &data).await
 }
 
 pub async fn list_for_zi(data: Data<AppState>, first: String) -> Vec<Zi> {
