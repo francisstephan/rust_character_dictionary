@@ -140,7 +140,7 @@ pub async fn addzi(
 
 #[put("/doupdate")]
 pub async fn doupdate(
-    zidata: web::Form<dbase::Idzi>,
+    zidata: web::Form<dbase::Idzi>, // deserialization by serde of form info
     tera: Data<Tera>,
     data: web::Data<AppState>,
 ) -> impl Responder {
@@ -151,12 +151,12 @@ pub async fn doupdate(
 }
 
 #[delete("/dodelete/{id}")]
-pub async fn do_delete(
-    path: web::Path<String>,
+pub async fn dodelete(
+    iddata: web::Path<dbase::IdData>, // deserialization by serde of path info
     tera: Data<Tera>,
     data: web::Data<AppState>,
 ) -> impl Responder {
-    let id = path.into_inner().parse::<i64>().unwrap();
+    let id = iddata.id;
     let chaine = dbase::delete_db(id, data).await;
     let mut ctx = Context::new();
     ctx.insert("content", &chaine);
@@ -166,8 +166,7 @@ pub async fn do_delete(
 #[get("/remove")]
 pub async fn remove(tera: Data<Tera>) -> impl Responder {
     let mut ctx = Context::new();
-    let insert = "Form canceled";
-    ctx.insert("content", &insert);
+    ctx.insert("content", "Form canceled");
     HttpResponse::Ok().body(tera.render("components/content.html", &ctx).unwrap())
 }
 

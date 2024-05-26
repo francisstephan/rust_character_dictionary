@@ -48,7 +48,7 @@ async fn main() -> std::io::Result<()> {
             .service(handlers::doupdate)
             .service(handlers::getseldelete)
             .service(handlers::deletezi)
-            .service(handlers::do_delete)
+            .service(handlers::dodelete)
             .service(handlers::showlast)
             .service(handlers::remove)
             .service(actix_files::Files::new("/assets", "./vol/assets").show_files_listing())
