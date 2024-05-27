@@ -11,7 +11,7 @@ pub async fn index(req: HttpRequest, tera: Data<Tera>) -> impl Responder {
     let ipaddr = actix_remote_ip::get_remote_ip(&req);
     let mut ctx = Context::new();
     if ipaddr.is_loopback() {
-        ctx.insert("contenu", "");
+        ctx.insert("contenu", "Connected to local server");
     } else {
         ctx.insert("contenu", "Caution: all modifications to the database will be discarded at the end of the fly.io session");
     }

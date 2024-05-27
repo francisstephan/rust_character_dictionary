@@ -1,6 +1,5 @@
 use actix_files;
 use actix_web::{middleware::Logger, web::Data, App, HttpServer};
-use dotenv::dotenv;
 use sqlx::sqlite::SqlitePool;
 use tera::Tera;
 
@@ -20,9 +19,9 @@ pub struct AppState {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    env_logger::init_from_env(env_logger::Env::new().default_filter_or("debug"));
-    dotenv().ok();
     std::env::set_var("RUST_LOG", "debug");
+    std::env::set_var("DATABASE_URL", "sqlite://vol/zidian.db");
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("debug"));
     log::debug!("Starting Server");
 
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
@@ -52,7 +51,6 @@ async fn main() -> std::io::Result<()> {
             .service(handlers::showlast)
             .service(handlers::remove)
             .service(actix_files::Files::new("/assets", "./vol/assets").show_files_listing())
-        // making /assets files accessible
     })
     .bind(("0.0.0.0", 8090))?
     .run()

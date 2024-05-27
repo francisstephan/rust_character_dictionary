@@ -53,7 +53,7 @@ pub async fn getsize(data: Data<AppState>) -> i64 {
     result.0
 }
 
-async fn doquery(query: &str, data: &Data<AppState>) -> Vec<Zi> {
+async fn read_query(query: &str, data: &Data<AppState>) -> Vec<Zi> {
     let mut disp = Vec::<Zi>::new();
     let dic = sqlx::query_as::<_, DBidzi>(&query)
         .fetch_all(&data.db)
@@ -81,7 +81,7 @@ async fn doquery(query: &str, data: &Data<AppState>) -> Vec<Zi> {
 pub async fn list_last(data: Data<AppState>) -> Vec<Zi> {
     // https://stackoverflow.com/questions/24494182/how-to-read-the-last-record-in-sqlite-table
     let query = "SELECT * FROM pyhz ORDER BY id DESC LIMIT 1";
-    doquery(query, &data).await
+    read_query(query, &data).await
 }
 
 pub async fn update_db(zi: Form<Idzi>, data: Data<AppState>) -> String {
@@ -144,8 +144,7 @@ pub async fn readdic(data: &Data<AppState>, whereclause: &str) -> Vec<Zi> {
     } else {
         basequery
     };
-
-    doquery(query, &data).await
+    read_query(query, &data).await
 }
 
 pub async fn list_for_zi(data: Data<AppState>, first: String) -> Vec<Zi> {
