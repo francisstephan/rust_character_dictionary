@@ -49,7 +49,7 @@ async fn main() -> std::io::Result<()> {
             .service(handlers::deletezi)
             .service(handlers::dodelete)
             .service(handlers::showlast)
-            .service(handlers::remove)
+            .service(handlers::cancel)
             .service(actix_files::Files::new("/assets", "./vol/assets").show_files_listing())
     })
     .bind(("0.0.0.0", 8090))?

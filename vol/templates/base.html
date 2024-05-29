@@ -64,7 +64,7 @@
       }
       function esckey(e) {
         if (e.keyCode == 27)
-          htmx.ajax("GET", "/remove", {target: "#content", swap: "innerHTML",}); // key esc : cancel form
+          htmx.ajax("GET", "/cancel", {target: "#content", swap: "innerHTML",}); // key esc : cancel form
       }
       function ajustkey() {
         contenu = document.getElementById("content");

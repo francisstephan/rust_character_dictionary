@@ -5,7 +5,7 @@ pub fn ziform() -> String {
 			<enctype="application/x-www-form-urlencoded">
 		    <input id="carac" name="carac" type="text" autofocus required minlength="1" maxlength="1">
 		    <button class="menubouton" type="submit">Click to submit </button>
-			<button class="menubouton" hx-get="/remove" hx-target="#content", hx-swap="innerHTML">Cancel</button>
+			<button class="menubouton" hx-get="/cancel" hx-target="#content", hx-swap="innerHTML">Cancel</button>
 	  </form>
 	"##;
     String::from(form)
@@ -17,7 +17,7 @@ pub fn pyform() -> String {
 		    <label for="pinyin">Pinyin+tone (using pattern ^[a-z,ü]+[0-4]?) :</label>
 		    <input id="pinyin" name="pinyin" type="text" pattern="^[a-z,ü]+[0-4]?" autofocus>
 		    <button class="menubouton" type="submit">Click to submit </button>
-			<button class="menubouton" hx-get="/remove" hx-target="#content" hx-swap="innerHTML">Cancel</button>
+			<button class="menubouton" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>
 	  </form>
 	"##;
     String::from(form)
@@ -38,7 +38,7 @@ pub fn addziform() -> String {
 		  <input id="sens" name="sens" type="text" required minlength="2" maxlength="60"><br />
 
 		<button class="formbut" type="submit">Submit</button>
-		<button class="formbut" hx-get="/remove" hx-target="#content" hx-swap="innerHTML">Cancel</button>
+		<button class="formbut" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>
 	  </form>
 	  <script>
 	    function displayChar(){
@@ -58,7 +58,7 @@ pub fn selupdate() -> String {
 		    <label for="id">Id:</label>
 		    <input id="id" name="id" required type="number" autofocus>
 		    <button class="menubouton" type="submit">Click to submit </button>
-			<button class="menubouton" hx-get="/remove" hx-target="#content" hx-swap="innerHTML">Cancel</button>
+			<button class="menubouton" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>
 	  </form>
 	"##;
     String::from(form)
@@ -71,7 +71,7 @@ pub fn seldelete() -> String {
 			<label for="id">Id:</label>
 		    <input id="id" name="id" required type="number" autofocus>
 		    <button class="menubouton" type="submit">Submit</button>
-			<button class="menubouton" hx-get="/remove" hx-target="#content" hx-swap="innerHTML">Cancel</button>
+			<button class="menubouton" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>
 	  </form>
 	  "##;
     String::from(form)

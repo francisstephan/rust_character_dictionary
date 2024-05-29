@@ -164,8 +164,8 @@ pub async fn dodelete(
     HttpResponse::Ok().body(tera.render("components/content.html", &ctx).unwrap())
 }
 
-#[get("/remove")]
-pub async fn remove(tera: Data<Tera>) -> impl Responder {
+#[get("/cancel")]
+pub async fn cancel(tera: Data<Tera>) -> impl Responder {
     let mut ctx = Context::new();
     ctx.insert("content", "Form canceled");
     HttpResponse::Ok().body(tera.render("components/content.html", &ctx).unwrap())
