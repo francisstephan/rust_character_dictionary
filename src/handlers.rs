@@ -54,7 +54,7 @@ pub async fn showlast(tera: Data<Tera>, data: web::Data<AppState>) -> impl Respo
 #[get("/getziform")]
 pub async fn getziform(tera: Data<Tera>) -> impl Responder {
     let mut ctx = Context::new();
-    let insert = forms::ziform();
+    let insert: String = forms::ziform();
     ctx.insert("content", &insert);
     HttpResponse::Ok().body(tera.render("components/content.html", &ctx).unwrap())
 }

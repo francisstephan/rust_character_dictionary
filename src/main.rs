@@ -12,6 +12,7 @@ mod handlers;
 // https://codevoweb.com/rust-build-a-crud-api-with-sqlx-and-postgresql/
 // https://kojinglick.com/using-htmx-with-rust-quickstart  (htmx + actix, very inspiring)
 // https://stackoverflow.com/questions/29026066/what-is-the-idiomatic-way-to-convert-a-string-to-str
+// https://stackoverflow.com/questions/41034635/how-do-i-convert-between-string-str-vecu8-and-u8
 
 pub struct AppState {
     db: SqlitePool,
