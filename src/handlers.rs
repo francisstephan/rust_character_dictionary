@@ -47,7 +47,6 @@ pub async fn showlast(tera: Data<Tera>, data: web::Data<AppState>) -> impl Respo
     let disp = dbase::list_last(data).await;
 
     ctx.insert("dico", &disp);
-    ctx.insert("diclen", &disp.len());
     HttpResponse::Ok().body(tera.render("components/zilist.html", &ctx).unwrap())
 }
 
@@ -182,9 +181,7 @@ pub async fn zilist(
     let mut ctx = Context::new();
     ctx.insert("query", &chain);
     let disp = dbase::list_for_zi(data, format!("{:X}", first as u32)).await;
-
     ctx.insert("dico", &disp);
-    ctx.insert("diclen", &disp.len());
     HttpResponse::Ok().body(tera.render("components/zilist.html", &ctx).unwrap())
 }
 
@@ -200,7 +197,6 @@ pub async fn pylist(
 
     let disp = dbase::list_for_py(data, String::from(chain)).await;
     ctx.insert("dico", &disp);
-    ctx.insert("diclen", &disp.len());
     HttpResponse::Ok().body(tera.render("components/zilist.html", &ctx).unwrap())
 }
 
@@ -211,6 +207,5 @@ pub async fn listdic(tera: Data<Tera>, data: web::Data<AppState>) -> impl Respon
 
     let disp = dbase::readdic(&data, "").await;
     ctx.insert("dico", &disp);
-    ctx.insert("diclen", &disp.len());
     HttpResponse::Ok().body(tera.render("components/zilist.html", &ctx).unwrap())
 }
