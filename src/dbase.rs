@@ -87,8 +87,7 @@ pub async fn list_last(data: Data<AppState>) -> Vec<Zi> {
 pub async fn update_db(zi: Form<Idzi>, data: Data<AppState>) -> String {
     //   https://github.com/addies/rust-crud-axum-sqlx-postgresql/blob/main/src/main.rs
     let query = format!(
-        "UPDATE pyhz SET pinyin_ton='{}', sens='{}' WHERE id='{}'",
-        zi.pinyin_ton,
+        "UPDATE pyhz SET  sens='{}' WHERE id='{}'",
         ammonia::clean(&zi.sens),
         zi.id
     );

@@ -10,13 +10,13 @@
         <label for="id">Id:</label>
         <input id="id" name="id" type="text" readonly value="{{zi.id}}" /><br />
         <label for="pinyin_ton"
-            >Pinyin+tone (using pattern ^[a-z,ü]+[0-4]) :</label
+            >Pinyin+tone (readonly) :</label
         >
         <input
             id="pinyin_ton"
             name="pinyin_ton"
             type="text"
-            pattern="^[a-z,ü]+[0-4]"
+            readonly
             value="{{zi.pinyin_ton}}"
         /><br />
         <label for="unicode">Unicode (hexa, readonly):</label>
