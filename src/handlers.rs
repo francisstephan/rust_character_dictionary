@@ -58,6 +58,14 @@ pub async fn getziform(tera: Data<Tera>) -> impl Responder {
     HttpResponse::Ok().body(tera.render("components/content.html", &ctx).unwrap())
 }
 
+#[get("/getparseform")]
+pub async fn getparseform(tera: Data<Tera>) -> impl Responder {
+    let mut ctx = Context::new();
+    let insert: String = forms::zistringform();
+    ctx.insert("content", &insert);
+    HttpResponse::Ok().body(tera.render("components/content.html", &ctx).unwrap())
+}
+
 #[get("/getpyform")]
 pub async fn getpyform(tera: Data<Tera>) -> impl Responder {
     let mut ctx = Context::new();
@@ -185,13 +193,56 @@ pub async fn zilist(
     HttpResponse::Ok().body(tera.render("components/zilist.html", &ctx).unwrap())
 }
 
+#[post("/stringparse")]
+pub async fn stringparse(
+    formdata: web::Form<dbase::ZiStrData>,
+    tera: Data<Tera>,
+    data: web::Data<AppState>,
+) -> impl Responder {
+    let chain = ammonia::clean(&formdata.zistr); // check String sanity
+    let mut chars = chain.chars();
+    let mut parsed = String::new();
+    let mut unknown = Vec::<String>::new();
+    while let Some(carac) = chars.next() {
+        // 1. If carac is not a chinese character, simply append it to parsed
+        if (carac as i64) < 0x2000 || "。，“”（）、《》—；！".find(carac) != None {
+            parsed = format!("{}{}", parsed, carac)
+        } else {
+            // 2. get all pinyin for the carac character in the database
+            let disp = dbase::zi_to_py(&data, carac).await;
+            if disp.len() > 0 {
+                // 3. The character exists in the database: give all pinyin separated by /
+                parsed = format!("{}{}", parsed, " "); // insert space for better readibility
+                for (i, py) in disp.iter().enumerate() {
+                    if i > 0 {
+                        parsed = format!("{}{}", parsed, "/");
+                    }
+                    parsed = format!("{}{}", parsed, py);
+                }
+            } else {
+                // 4. The character is not in the base: add it to the unknown Vec
+                // 5. and append it as such (unparsed) to parsed
+                unknown.push(carac.to_string());
+                parsed = format!("{}{}", parsed, carac);
+            }
+        }
+    }
+
+    let mut ctx = Context::new();
+    ctx.insert("query", &chain);
+    ctx.insert("parsedstr", &parsed);
+    ctx.insert("unknownzi", &unknown);
+
+    HttpResponse::Ok().body(tera.render("components/parsed.html", &ctx).unwrap())
+}
+
 #[post("/pylist")]
 pub async fn pylist(
     formdata: web::Form<dbase::PinyinData>,
     tera: Data<Tera>,
     data: web::Data<AppState>,
 ) -> impl Responder {
-    let chain = &formdata.pinyin;
+    let chain = &formdata.pinyin_ton;
     let mut ctx = Context::new();
     ctx.insert("query", &chain);
 

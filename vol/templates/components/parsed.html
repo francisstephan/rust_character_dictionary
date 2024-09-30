@@ -1,0 +1,16 @@
+<div id="content">
+    <p>Input string:</p>
+    <p class="hanzi">{{query}}</p>
+    <p>Parsed string:</p>
+    <p>{{parsedstr}}</p>
+    {% if unknownzi | length == 0 %}
+    <p>No unknown zi in input string</p>
+    {% else %}
+    <p>The following zi are not in the database:</p>
+    <ul>
+        {% for zi in unknownzi %}
+        <li class="hanzi">{{ zi }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>

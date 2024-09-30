@@ -51,6 +51,8 @@ async fn main() -> std::io::Result<()> {
             .service(handlers::dodelete)
             .service(handlers::showlast)
             .service(handlers::cancel)
+            .service(handlers::getparseform)
+            .service(handlers::stringparse)
             .service(actix_files::Files::new("/assets", "./vol/assets").show_files_listing())
     })
     .bind(("0.0.0.0", 8090))?

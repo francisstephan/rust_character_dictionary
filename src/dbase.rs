@@ -10,8 +10,13 @@ pub struct CharData {
 }
 
 #[derive(Deserialize)]
+pub struct ZiStrData {
+    pub zistr: String,
+}
+
+#[derive(Deserialize, sqlx::FromRow)]
 pub struct PinyinData {
-    pub pinyin: String,
+    pub pinyin_ton: String,
 }
 
 #[derive(Deserialize)]
@@ -149,6 +154,25 @@ pub async fn readdic(data: &Data<AppState>, whereclause: &str) -> Vec<Zi> {
 pub async fn list_for_zi(data: Data<AppState>, first: String) -> Vec<Zi> {
     let whereclause = format!(" unicode = '{}' ORDER BY pinyin_ton", &first);
     readdic(&data, &whereclause).await
+}
+
+pub async fn zi_to_py(data: &Data<AppState>, carac: char) -> Vec<String> {
+    // get unicode from carac:
+    let mut unicode = format!("{:x}", carac as u32);
+    unicode = unicode.to_uppercase();
+    let query = format!(
+        "SELECT pinyin_ton FROM pyhz WHERE unicode = '{}' ORDER BY pinyin_ton",
+        unicode
+    );
+    let mut disp = Vec::<String>::new();
+    let dic = sqlx::query_as::<_, PinyinData>(&query)
+        .fetch_all(&data.db)
+        .await
+        .unwrap();
+    for pinyindata in dic.iter() {
+        disp.push(pinyindata.pinyin_ton.clone());
+    }
+    disp
 }
 
 pub async fn list_for_py(data: Data<AppState>, first: String) -> Vec<Zi> {

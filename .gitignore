@@ -5,4 +5,5 @@ Cargo.lock
 /.archive
 .gitignore
 .dockerignore
+design.atom
 

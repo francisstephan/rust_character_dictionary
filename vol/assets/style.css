@@ -134,3 +134,8 @@ input:valid {
 #footer a {
     color: white;
 }
+
+p.hanzi,
+li.hanzi {
+    font-size: 20px;
+}

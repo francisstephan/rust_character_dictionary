@@ -11,11 +11,24 @@ pub fn ziform() -> String {
     String::from(form)
 }
 
+pub fn zistringform() -> String {
+    let form = r##"
+	    <p id="formhead">Enter zi string to parse :</p>
+        <form hx-post="/stringparse" hx-target="#content" hx-swap="innerHTML" >
+			<enctype="application/x-www-form-urlencoded">
+		    <input id="zistr" name="zistr" type="text" autofocus required size="50" minlength="1" maxlength="300">
+		    <button class="menubouton" type="submit">Click to submit </button>
+			<button class="menubouton" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>
+	    </form>
+	"##;
+    String::from(form)
+}
+
 pub fn pyform() -> String {
     let form = r##"
         <form hx-post="/pylist" hx-target="#content" hx-swap="innerHTML" >
 		    <label for="pinyin">Pinyin+tone (using pattern ^[a-z,ü]+[0-4]?) :</label>
-		    <input id="pinyin" name="pinyin" type="text" pattern="^[a-z,ü]+[0-4]?" autofocus>
+		    <input id="pinyin_ton" name="pinyin_ton" type="text" pattern="^[a-z,ü]+[0-4]?" autofocus>
 		    <button class="menubouton" type="submit">Click to submit </button>
 			<button class="menubouton" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>
 	  </form>
