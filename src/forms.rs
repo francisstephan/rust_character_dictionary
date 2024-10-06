@@ -13,10 +13,10 @@ pub fn ziform() -> String {
 
 pub fn zistringform() -> String {
     let form = r##"
-	    <p id="formhead">Enter zi string to parse :</p>
+	    <p id="formhead">Enter hanzi string to parse :</p>
         <form hx-post="/stringparse" hx-target="#content" hx-swap="innerHTML" >
 			<enctype="application/x-www-form-urlencoded">
-		    <input id="zistr" name="zistr" type="text" autofocus required size="50" minlength="1" maxlength="300">
+		    <input id="zistr" name="zistr" type="text" autofocus required size="80" minlength="1" maxlength="400">
 		    <button class="menubouton" type="submit">Click to submit </button>
 			<button class="menubouton" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>
 	    </form>

@@ -138,4 +138,15 @@ input:valid {
 p.hanzi,
 li.hanzi {
     font-size: 20px;
+    margin: 0 20px 0 20px;
+    max-width: 700px;
+}
+
+:is(tbody, table) > tr:nth-child(odd) {
+    background: #0001; /* or #fff1 for dark themes */
+}
+
+ul.nobullets {
+    list-style-type: none;
+    margin: 5px;
 }

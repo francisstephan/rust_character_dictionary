@@ -7,7 +7,7 @@
     <p>No unknown zi in input string</p>
     {% else %}
     <p>The following zi are not in the database:</p>
-    <ul>
+    <ul class="nobullets">
         {% for zi in unknownzi %}
         <li class="hanzi">{{ zi }}</li>
         {% endfor %}

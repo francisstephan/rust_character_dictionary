@@ -204,8 +204,9 @@ pub async fn stringparse(
     let mut parsed = String::new();
     let mut unknown = Vec::<String>::new();
     while let Some(carac) = chars.next() {
-        // 1. If carac is not a chinese character, simply append it to parsed
-        if (carac as i64) < 0x2000 || "。，“”（）、《》—；！".find(carac) != None {
+        // 1. If carac is not a chinese character or is a punctuation mark, simply append it to parsed
+        if (carac as i64) < 0x2000 || "。，“”（）、《》—；：！？「」 【】".find(carac) != None
+        {
             parsed = format!("{}{}", parsed, carac)
         } else {
             // 2. get all pinyin for the carac character in the database
