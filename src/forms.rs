@@ -48,7 +48,7 @@ pub fn addziform() -> String {
 		  <input id="unicode" name="unicode" type="text" required pattern="^[0-9,A-F]{4}">
 				<span id="viewcar"> </span><br />
 		  <label for="sens">Meaning:</label>
-		  <input id="sens" name="sens" type="text" required minlength="2" maxlength="60"><br />
+		  <input id="sens" name="sens" type="text" required minlength="1" maxlength="60"><br />
 
 		<button class="formbut" type="submit">Submit</button>
 		<button class="formbut" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>

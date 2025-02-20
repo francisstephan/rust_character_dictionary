@@ -203,17 +203,25 @@ pub async fn stringparse(
     let mut chars = chain.chars();
     let mut parsed = String::new();
     let mut unknown = Vec::<String>::new();
+    let mut nonzi: bool = false;
     while let Some(carac) = chars.next() {
         // 1. If carac is not a chinese character or is a punctuation mark, simply append it to parsed
-        if (carac as i64) < 0x2000 || "。，“”（）、《》—；：！？「」 【】".find(carac) != None
+        if (carac as i64) < 0x2000 || "。，“”（）、《》—；：！？「」 【】『』％".find(carac) != None
         {
-            parsed = format!("{}{}", parsed, carac)
+            if nonzi {
+                parsed = format!("{}{}", parsed, carac)
+            } else {
+                parsed = format!("{}   {}", parsed, carac); // insert spaces before first non zi character
+                nonzi = true;
+            }
         } else {
-            // 2. get all pinyin for the carac character in the database
+            nonzi = false; // this is a zi: reset nonzi
+                           // 2. get all pinyin for the carac character in the database
             let disp = dbase::zi_to_py(&data, carac).await;
             if disp.len() > 0 {
                 // 3. The character exists in the database: give all pinyin separated by /
-                parsed = format!("{}{}", parsed, " "); // insert space for better readibility
+                // parsed = format!("{}{}", parsed, " "); // simpler as follows:
+                parsed = format!("{} ", parsed); // insert space for better readability
                 for (i, py) in disp.iter().enumerate() {
                     if i > 0 {
                         parsed = format!("{}{}", parsed, "/");
@@ -224,7 +232,7 @@ pub async fn stringparse(
                 // 4. The character is not in the base: add it to the unknown Vec
                 // 5. and append it as such (unparsed) to parsed
                 unknown.push(carac.to_string());
-                parsed = format!("{}{}", parsed, carac);
+                parsed = format!("{} {}", parsed, carac);
             }
         }
     }
