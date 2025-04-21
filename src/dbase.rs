@@ -14,6 +14,11 @@ pub struct ZiStrData {
     pub zistr: String,
 }
 
+#[derive(Deserialize)]
+pub struct StrokesData {
+    pub strokes: i64,
+}
+
 #[derive(Deserialize, sqlx::FromRow)]
 pub struct PinyinData {
     pub pinyin_ton: String,
@@ -31,6 +36,7 @@ pub struct Zi {
     pub unicode: String,
     pub hanzi: char,
     pub sens: String,
+    pub strokes: i64,
 }
 
 #[derive(sqlx::FromRow)]
@@ -39,6 +45,7 @@ pub struct DBidzi {
     pinyin_ton: String,
     unicode: String,
     sens: String,
+    strokes: i64,
 }
 
 #[derive(Deserialize)]
@@ -47,6 +54,7 @@ pub struct Idzi {
     pub pinyin_ton: String,
     pub unicode: String,
     pub sens: String,
+    pub strokes: i64,
 }
 
 pub async fn getsize(data: Data<AppState>) -> i64 {
@@ -76,6 +84,7 @@ async fn read_query(query: &str, data: &Data<AppState>) -> Vec<Zi> {
             unicode: dbidzi.unicode.clone(),
             hanzi: carac,
             sens: dbidzi.sens.clone(),
+            strokes: dbidzi.strokes,
         };
         disp.push(zi);
     }
@@ -92,8 +101,9 @@ pub async fn list_last(data: Data<AppState>) -> Vec<Zi> {
 pub async fn update_db(zi: Form<Idzi>, data: Data<AppState>) -> String {
     //   https://github.com/addies/rust-crud-axum-sqlx-postgresql/blob/main/src/main.rs
     let query = format!(
-        "UPDATE pyhz SET  sens='{}' WHERE id='{}'",
+        "UPDATE pyhz SET  sens='{}', strokes='{}' WHERE id='{}'",
         ammonia::clean(&zi.sens),
+        zi.strokes,
         zi.id
     );
     let result = sqlx::query(&query).execute(&data.db).await;
@@ -127,10 +137,11 @@ pub async fn addzi_db(zi: Form<Idzi>, data: Data<AppState>) -> String {
 
     // 2. add zi:
     let query = format!(
-        "INSERT INTO pyhz (pinyin_ton, unicode, sens) VALUES ('{}', '{}', '{}')",
+        "INSERT INTO pyhz (pinyin_ton, unicode, sens, strokes) VALUES ('{}', '{}', '{}', {})",
         zi.pinyin_ton,
         zi.unicode,
-        ammonia::clean(&zi.sens) // sanitize zi.sens, which has no specific format
+        ammonia::clean(&zi.sens), // sanitize zi.sens, which has no specific format
+        zi.strokes
     );
     let result = sqlx::query(&query).execute(&data.db).await;
     match result {
@@ -140,7 +151,7 @@ pub async fn addzi_db(zi: Form<Idzi>, data: Data<AppState>) -> String {
 }
 
 pub async fn readdic(data: &Data<AppState>, whereclause: &str) -> Vec<Zi> {
-    let basequery = "SELECT id, pinyin_ton, unicode, sens FROM pyhz";
+    let basequery = "SELECT id, pinyin_ton, unicode, sens, strokes FROM pyhz";
     let qq: String;
     let query = if !whereclause.is_empty() {
         qq = format!("{} WHERE {}", basequery, whereclause);
@@ -156,12 +167,17 @@ pub async fn list_for_zi(data: Data<AppState>, first: String) -> Vec<Zi> {
     readdic(&data, &whereclause).await
 }
 
+pub async fn list_for_str(data: Data<AppState>, strokes: i64) -> Vec<Zi> {
+    let whereclause = format!(" strokes = '{}' ORDER BY unicode, pinyin_ton", strokes);
+    readdic(&data, &whereclause).await
+}
+
 pub async fn zi_to_py(data: &Data<AppState>, carac: char) -> Vec<String> {
     // get unicode from carac:
     let mut unicode = format!("{:x}", carac as u32);
     unicode = unicode.to_uppercase();
     let query = format!(
-        "SELECT pinyin_ton FROM pyhz WHERE unicode = '{}' ORDER BY pinyin_ton",
+        "SELECT pinyin_ton FROM pyhz WHERE unicode = '{}' ORDER BY pinyin_ton ASC",
         unicode
     );
     let mut disp = Vec::<String>::new();
@@ -180,10 +196,10 @@ pub async fn list_for_py(data: Data<AppState>, first: String) -> Vec<Zi> {
     let cond = matches!(last_char, '0'..='4');
     let whereclause = if !cond {
         // no tone given: check all tones 0 to 4
-        format!(" pinyin_ton = '{}0' OR pinyin_ton = '{}1' OR pinyin_ton = '{}2' OR pinyin_ton = '{}3' OR pinyin_ton = '{}4' ORDER BY pinyin_ton, unicode"
+        format!(" pinyin_ton = '{}0' OR pinyin_ton = '{}1' OR pinyin_ton = '{}2' OR pinyin_ton = '{}3' OR pinyin_ton = '{}4' ORDER BY pinyin_ton, strokes, unicode"
             , &first, &first, &first, &first, &first)
     } else {
-        format!(" pinyin_ton = '{}' ORDER BY unicode", &first)
+        format!(" pinyin_ton = '{}' ORDER BY strokes, unicode", &first)
     };
     readdic(&data, &whereclause).await
 }

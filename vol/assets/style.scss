@@ -1,0 +1,222 @@
+// adapted from https://codepen.io/cassidoo/pen/bGbVoJQ
+
+body {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 30px;
+    padding: 20px 10px 20px 10px;
+    background-color: #f4b43e;
+    color: white;
+}
+
+#logo {
+    margin-top: -20px;
+    float: left;
+    height: 60px;
+}
+
+#nav {
+  position: absolute;
+  top: 12px;
+  left: 135px;
+  display: inline-block;
+  border: none;
+  animation: slide-in 1s ease-out;
+}
+
+ul.navig {
+  position: relative;
+  background: #f4b43e;
+  display: flex;
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0 30px;
+  list-style-type: none;
+  li:not(:last-child) {
+    margin-right: 10px;
+  }
+  li {
+    border: 2px solid transparent;
+    border-radius: 5px;
+    padding: 10px;
+    transition: background 0.2s;
+    display: block;
+    text-align: center;
+    margin:0; //  10px 4px
+    float: left;
+    height: 22px;
+    padding: 4px 10px 0 10px;
+    background: #666;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    ul {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      display: block;
+      width:150px;
+      margin-top:5px;
+      padding: 0;
+      background: #f4b43e;
+      border: 2px solid #F7C833;
+      border-right: 2px solid #F89329;
+      border-bottom: 2px solid #F89329;
+      border-radius: 5px;
+      transition: opacity 0.2s, visibility 0.2s;
+      li {
+        width: 150px;
+        height: 40px;
+        float:none;
+        padding:0;
+        margin-bottom:1px;
+        span { // https://stackoverflow.com/questions/8865458/how-do-i-vertically-center-text-with-css
+          display: inline-block;
+          vertical-align: middle;
+          line-height: 40px;
+        }
+      }
+    }
+    &:hover {
+      background: #EC4138;
+      border: 2px solid #F05749;
+      border-right: 2px solid #E02A21;
+      border-bottom: 2px solid #E02A21;
+
+      ul {
+        visibility: visible;
+        opacity: 1;
+        box-shadow: 0px 3px 5px 2px #EBECF1;
+        li {
+
+        }
+      }
+    }
+  }
+}
+
+ul#manage li{
+  height: 30px;
+}
+
+ul#manage li span{
+  line-height: 30px;
+}
+
+h1.title {
+    padding-top: 80px; // 54px
+}
+
+#layout-wrapper {
+    padding-left: 10px;
+    padding-bottom: 90px;
+}
+
+button.menubouton {
+    margin: 20 px;
+    background-color: darkgreen;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+table,
+tr,
+td {
+    border: 1px solid;
+}
+table {
+    border-collapse: collapse;
+    margin-left: 50px;
+    margin-top: 20px;
+}
+td {
+    padding-left: 4px;
+    padding-right: 4px;
+    text-align: center;
+    font-size: 18px;
+}
+
+form.multi {
+    /* https://www.digitalocean.com/community/tutorials/how-to-style-common-form-elements-with-css */
+    margin-left: 10%;
+    width: 40%;
+    box-sizing: border-box;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: hsl(0, 0%, 90%);
+    border: 4px solid hsl(0, 0%, 60%);
+    display: grid;
+    grid-template-columns: 1Fr;
+    gap: 0;
+}
+
+button.formbut {
+    margin-top: 20px;
+    background-color: #a0522d;
+    color: white;
+    width: 100%;
+    height: 30px;
+    width: 70%;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 15%;
+}
+
+p#formhead {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration-line: underline;
+}
+
+span#viewcar {
+    font-size: 24px;
+}
+
+input:invalid {
+    border: 2px dashed red;
+}
+
+input:valid {
+    border: 1px solid black;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 70px;
+    width: 100%;
+    background: #888;
+    color: white;
+    padding: 10px 0 0 100px;
+    font-size: 16px;
+}
+#footer a {
+    color: white;
+}
+
+p.hanzi,
+li.hanzi {
+    font-size: 20px;
+    margin: 0 20px 0 20px;
+    max-width: 700px;
+}
+
+:is(tbody, table) > tr:nth-child(odd) {
+    background: #0001; /* or #fff1 for dark themes */
+}
+
+ul.nobullets {
+    list-style-type: none;
+    margin: 5px;
+}

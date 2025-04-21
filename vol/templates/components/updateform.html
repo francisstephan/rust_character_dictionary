@@ -9,9 +9,7 @@
         <p id="formhead">Update dictionary entry :</p>
         <label for="id">Id:</label>
         <input id="id" name="id" type="text" readonly value="{{zi.id}}" /><br />
-        <label for="pinyin_ton"
-            >Pinyin+tone (readonly) :</label
-        >
+        <label for="pinyin_ton">Pinyin+tone (readonly) :</label>
         <input
             id="pinyin_ton"
             name="pinyin_ton"
@@ -28,6 +26,15 @@
             value="{{zi.unicode}}"
         />
         <span id="viewcar">{{zi.hanzi}}</span><br />
+        <label for="strokes">Number of strokes:</label>
+        <input
+            id="strokes"
+            name="strokes"
+            type="number"
+            min="1"
+            max="60"
+            value="{{zi.strokes}}"
+        />
         <label for="sens">Meaning:</label>
         <input id="sens" name="sens" type="text" value="{{zi.sens}}" /><br />
         <button class="formbut" type="submit">Submit</button>

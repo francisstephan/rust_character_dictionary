@@ -74,6 +74,14 @@ pub async fn getpyform(tera: Data<Tera>) -> impl Responder {
     HttpResponse::Ok().body(tera.render("components/content.html", &ctx).unwrap())
 }
 
+#[get("/getstrform")]
+pub async fn getstrform(tera: Data<Tera>) -> impl Responder {
+    let mut ctx = Context::new();
+    let insert = forms::strform();
+    ctx.insert("content", &insert);
+    HttpResponse::Ok().body(tera.render("components/content.html", &ctx).unwrap())
+}
+
 #[get("/getaddziform")]
 pub async fn getaddziform(tera: Data<Tera>) -> impl Responder {
     let mut ctx = Context::new();
@@ -189,6 +197,22 @@ pub async fn zilist(
     let mut ctx = Context::new();
     ctx.insert("query", &chain);
     let disp = dbase::list_for_zi(data, format!("{:X}", first as u32)).await;
+    ctx.insert("dico", &disp);
+    HttpResponse::Ok().body(tera.render("components/zilist.html", &ctx).unwrap())
+}
+
+#[post("/strlist")]
+pub async fn strlist(
+    formdata: web::Form<dbase::StrokesData>,
+    tera: Data<Tera>,
+    data: web::Data<AppState>,
+) -> impl Responder {
+    let strokes = formdata.strokes;
+    let chain = &format!("Zi with {} stroke(s)", strokes);
+    let mut ctx = Context::new();
+    ctx.insert("query", &chain);
+
+    let disp = dbase::list_for_str(data, strokes).await;
     ctx.insert("dico", &disp);
     HttpResponse::Ok().body(tera.render("components/zilist.html", &ctx).unwrap())
 }

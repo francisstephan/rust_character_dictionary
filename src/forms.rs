@@ -1,6 +1,6 @@
 pub fn ziform() -> String {
     let form = r##"
-	  <form hx-post="/zilist" hx-target="#content" hx-swap="innerHTML" >
+	  <form hx-post="/zilist" hx-target="#content" hx-swap="innerHTML">
 		    <label for="carac">Character:</label>
 			<enctype="application/x-www-form-urlencoded">
 		    <input id="carac" name="carac" type="text" autofocus required minlength="1" maxlength="1">
@@ -26,9 +26,21 @@ pub fn zistringform() -> String {
 
 pub fn pyform() -> String {
     let form = r##"
-        <form hx-post="/pylist" hx-target="#content" hx-swap="innerHTML" >
+        <form hx-post="/pylist" hx-target="#content" hx-swap="innerHTML">
 		    <label for="pinyin">Pinyin+tone (using pattern ^[a-z,ü]+[0-4]?) :</label>
 		    <input id="pinyin_ton" name="pinyin_ton" type="text" pattern="^[a-z,ü]+[0-4]?" autofocus>
+		    <button class="menubouton" type="submit">Click to submit </button>
+			<button class="menubouton" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>
+	  </form>
+	"##;
+    String::from(form)
+}
+
+pub fn strform() -> String {
+    let form = r##"
+        <form hx-post="/strlist" hx-target="#content" hx-swap="innerHTML" >
+		    <label for="strokes">Number of strokes :</label>
+		    <input id="strokes" name="strokes" type="number" min="1" max="60" autofocus>
 		    <button class="menubouton" type="submit">Click to submit </button>
 			<button class="menubouton" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>
 	  </form>
@@ -47,9 +59,10 @@ pub fn addziform() -> String {
 		  <label for="unicode">Unicode (hexa, using pattern ^[0-9,A-F]{4}):</label>
 		  <input id="unicode" name="unicode" type="text" required pattern="^[0-9,A-F]{4}">
 				<span id="viewcar"> </span><br />
+		  <label for="strokes">Number of strokes:</label>
+		  <input id="strokes" name="strokes" type="number" required minlength="1" min="1" max="60"><br />
 		  <label for="sens">Meaning:</label>
-		  <input id="sens" name="sens" type="text" required minlength="1" maxlength="60"><br />
-
+		  <input id="sens" name="sens" type="text" required minlength="1" maxlength="400">
 		<button class="formbut" type="submit">Submit</button>
 		<button class="formbut" hx-get="/cancel" hx-target="#content" hx-swap="innerHTML">Cancel</button>
 	  </form>

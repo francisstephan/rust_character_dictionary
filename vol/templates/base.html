@@ -12,37 +12,50 @@
     <div id="layout-wrapper">
       <div id="header">
         <div id="logo">
-          <a href="/"><img src="/assets/rust-logo.svg" height="70" width="70"/></a>
+          <a href="/"><img src="/assets/header.png" height="70" width="122"/></a>
         </div>
-        <ul id="menu">
-          <li class="menuitem" hx-trigger="click" hx-get="/size" hx-target="#content" hx-swap="innerHTML">
-            Size
-          </li>
-          <li class="menuitem" hx-trigger="click" hx-get="/getziform" hx-target="#content" hx-swap="innerHTML">
-            Zi => Pinyin
-          </li>
-          <li class="menuitem" hx-trigger="click" hx-get="/getpyform" hx-target="#content" hx-swap="innerHTML">
-            Pinyin => Zi
-          </li>
-          <li class="menuitem" hx-trigger="click" hx-get="/getaddziform" hx-target="#content" hx-swap="innerHTML">
-            Add zi
-          </li>
-          <li class="menuitem" hx-trigger="click" hx-get="/getselupdate" hx-target="#content" hx-swap="innerHTML">
-            Update zi
-          </li>
-          <li class="menuitem" hx-trigger="click" hx-get="/showlast" hx-target="#content" hx-swap="innerHTML">
-            Last zi
-          </li>
-          <li class="menuitem" hx-trigger="click" hx-get="/getseldelete" hx-target="#content" hx-swap="innerHTML">
-            Delete zi
-          </li>
-          <li class="menuitem" hx-trigger="click" hx-get="/listdic" hx-target="#content" hx-swap="innerHTML">
-            List dictionary
-          </li>
-          <li class="menuitem" hx-trigger="click" hx-get="/getparseform" hx-target="#content" hx-swap="innerHTML">
-            Parse zi string
-          </li>
-        </ul>
+        <div id="nav">
+          <ul class="navig">
+            <li hx-trigger="click" hx-get="/size" hx-target="#content" hx-swap="innerHTML">
+                Size
+            </li>
+            <li>Get lists
+              <ul id="lists">
+                <li hx-trigger="click" hx-get="/getziform" hx-target="#content" hx-swap="innerHTML">
+                  Zi => Pinyin (shortcut = z)
+                </li>
+                <li hx-trigger="click" hx-get="/getpyform" hx-target="#content" hx-swap="innerHTML">
+                  Pinyin => Zi (shortcut = p)
+                </li>
+                <li hx-trigger="click" hx-get="/getstrform" hx-target="#content" hx-swap="innerHTML">
+                  Strokes => Zi (shortcut = s)
+		            </li>
+              </ul>
+            </li>
+            <li>Manage dictionary
+              <ul id="manage">
+		            <li hx-trigger="click" hx-get="/getaddziform" hx-target="#content" hx-swap="innerHTML">
+                  <span>Add zi</span>
+                </li>
+                <li hx-trigger="click" hx-get="/getselupdate" hx-target="#content" hx-swap="innerHTML">
+                  <span>Update zi</span>
+                </li>
+                <li hx-trigger="click" hx-get="/showlast" hx-target="#content" hx-swap="innerHTML">
+                  <span>Show last zi</span>
+                </li>
+                <li hx-trigger="click" hx-get="/getseldelete" hx-target="#content" hx-swap="innerHTML">
+                  <span>Delete zi</span>
+                </li>
+              </ul>
+            </li>
+            <li class="menuitem" hx-trigger="click" hx-get="/listdic" hx-target="#content" hx-swap="innerHTML">
+              List dictionary
+            </li>
+            <li class="menuitem" hx-trigger="click" hx-get="/getparseform" hx-target="#content" hx-swap="innerHTML">
+              Parse zi string
+            </li>
+          </ul>
+        </div><!-- end nav -->
       </div><!-- end header -->
       <div style="clear: both"></div>
       <h1 class="title">Manage character dictionary</h1>
@@ -57,13 +70,15 @@
         For other languages, see also
 	    <a href="https://www.eludev.fr/keyboards/" target="_blank">
 			https://www.eludev.fr/keyboards/</a>
- 
+
 	</div><!-- end footer -->
 
     <script>
       function shortkey(e) {
         if (e.keyCode == 80)
           htmx.ajax("GET", "/getpyform", {target: "#content", swap: "innerHTML",}); // key p : pinyin => zi
+        if (e.keyCode == 83)
+          htmx.ajax("GET", "/getstrform", {target: "#content", swap: "innerHTML",}); // key s : strokes => zi
         if (e.keyCode == 90)
           htmx.ajax("GET", "/getziform", {target: "#content", swap: "innerHTML",}); // key z : zi => pinyin
       }
@@ -74,7 +89,7 @@
       function ajustkey() {
         contenu = document.getElementById("content");
         if (contenu.innerHTML.includes("<form ")) {
-          // if form, authorize Esc and remove z and p listeners
+          // if form, authorize Esc and remove z, s and p listeners
           document.body.removeEventListener("keydown", shortkey);
           document.body.addEventListener("keydown", esckey);
         } else {
@@ -86,7 +101,7 @@
       window.onload = function () {
         elem = document.body;
         elem.addEventListener("keydown", shortkey); // initially enable z and p shortcut keys
-        elem.addEventListener("htmx:afterRequest", ajustkey); 
+        elem.addEventListener("htmx:afterRequest", ajustkey);
 		// after ajax request performed by htmx, adjust keydown listeners
         elem.addEventListener("htmx:afterRequest", function (evt) {
           contenu = document.getElementById("content");

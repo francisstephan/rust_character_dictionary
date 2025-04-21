@@ -40,6 +40,8 @@ async fn main() -> std::io::Result<()> {
             .service(handlers::zilist)
             .service(handlers::getpyform)
             .service(handlers::pylist)
+            .service(handlers::getstrform)
+            .service(handlers::strlist)
             .service(handlers::listdic)
             .service(handlers::getaddziform)
             .service(handlers::addzi)
