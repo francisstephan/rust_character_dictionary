@@ -230,7 +230,8 @@ pub async fn stringparse(
     let mut nonzi: bool = false;
     while let Some(carac) = chars.next() {
         // 1. If carac is not a chinese character or is a punctuation mark, simply append it to parsed
-        if (carac as i64) < 0x2000 || "。，“”（）、《》—；：！？「」 【】『』％".find(carac) != None
+        if (carac as i64) < 0x2000
+            || "。，“”（）、《》—；：！？「」 【】『』％‘’".find(carac) != None
         {
             if nonzi {
                 parsed = format!("{}{}", parsed, carac)
@@ -290,6 +291,16 @@ pub async fn listdic(tera: Data<Tera>, data: web::Data<AppState>) -> impl Respon
     ctx.insert("query", "List dictionary");
 
     let disp = dbase::readdic(&data, "").await;
+    ctx.insert("dico", &disp);
+    HttpResponse::Ok().body(tera.render("components/zilist.html", &ctx).unwrap())
+}
+
+#[get("/listrev")]
+pub async fn listrev(tera: Data<Tera>, data: web::Data<AppState>) -> impl Responder {
+    let mut ctx = Context::new();
+    ctx.insert("query", "Reverse list");
+
+    let disp = dbase::revreaddic(&data).await;
     ctx.insert("dico", &disp);
     HttpResponse::Ok().body(tera.render("components/zilist.html", &ctx).unwrap())
 }

@@ -43,6 +43,7 @@ async fn main() -> std::io::Result<()> {
             .service(handlers::getstrform)
             .service(handlers::strlist)
             .service(handlers::listdic)
+            .service(handlers::listrev)
             .service(handlers::getaddziform)
             .service(handlers::addzi)
             .service(handlers::getselupdate)

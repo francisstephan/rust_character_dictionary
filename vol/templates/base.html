@@ -19,38 +19,52 @@
             <li hx-trigger="click" hx-get="/size" hx-target="#content" hx-swap="innerHTML">
                 Size
             </li>
-            <li>Get lists
+            <li onmouseover="enablemenu('lists')" onmouseout="hidemenu('lists')">Get lists
+              <!-- onmouseover to restore the hover behavior after hx-on visbility cancellation -->
               <ul id="lists">
-                <li hx-trigger="click" hx-get="/getziform" hx-target="#content" hx-swap="innerHTML">
+                <li hx-trigger="click" hx-get="/getziform" hx-target="#content" hx-swap="innerHTML"
+                  hx-on::before-request ="hidemenu('lists')">
                   Zi => Pinyin (shortcut = z)
                 </li>
-                <li hx-trigger="click" hx-get="/getpyform" hx-target="#content" hx-swap="innerHTML">
+                <li hx-trigger="click" hx-get="/getpyform" hx-target="#content" hx-swap="innerHTML"
+                  hx-on::before-request ="hidemenu('lists')">
                   Pinyin => Zi (shortcut = p)
                 </li>
-                <li hx-trigger="click" hx-get="/getstrform" hx-target="#content" hx-swap="innerHTML">
+                <li hx-trigger="click" hx-get="/getstrform" hx-target="#content" hx-swap="innerHTML"
+                  hx-on::before-request ="hidemenu('lists')">
                   Strokes => Zi (shortcut = s)
 		            </li>
+                <li class="shortitem" hx-trigger="click" hx-get="/listdic" hx-target="#content" hx-swap="innerHTML"
+                  hx-on::before-request ="hidemenu('lists')">
+                  <span>List dictionary</span>
+                </li>
+                <li class="shortitem" hx-trigger="click" hx-get="/listrev" hx-target="#content" hx-swap="innerHTML"
+                  hx-on::before-request ="hidemenu('lists')">
+                  <span>Reverse list</span>
+                </li>
               </ul>
             </li>
-            <li>Manage dictionary
+            <li onmouseover="enablemenu('manage')" onmouseout="hidemenu('manage')">Manage dictionary
               <ul id="manage">
-		            <li hx-trigger="click" hx-get="/getaddziform" hx-target="#content" hx-swap="innerHTML">
+		            <li hx-trigger="click" hx-get="/getaddziform" hx-target="#content" hx-swap="innerHTML"
+                  hx-on::before-request ="hidemenu('manage')">
                   <span>Add zi</span>
                 </li>
-                <li hx-trigger="click" hx-get="/getselupdate" hx-target="#content" hx-swap="innerHTML">
+                <li hx-trigger="click" hx-get="/getselupdate" hx-target="#content" hx-swap="innerHTML"
+                  hx-on::before-request ="hidemenu('manage')">
                   <span>Update zi</span>
                 </li>
-                <li hx-trigger="click" hx-get="/showlast" hx-target="#content" hx-swap="innerHTML">
+                <li hx-trigger="click" hx-get="/showlast" hx-target="#content" hx-swap="innerHTML"
+                  hx-on::before-request ="hidemenu('manage')">
                   <span>Show last zi</span>
                 </li>
-                <li hx-trigger="click" hx-get="/getseldelete" hx-target="#content" hx-swap="innerHTML">
+                <li hx-trigger="click" hx-get="/getseldelete" hx-target="#content" hx-swap="innerHTML"
+                  hx-on::before-request ="hidemenu('manage')">
                   <span>Delete zi</span>
                 </li>
               </ul>
             </li>
-            <li class="menuitem" hx-trigger="click" hx-get="/listdic" hx-target="#content" hx-swap="innerHTML">
-              List dictionary
-            </li>
+
             <li class="menuitem" hx-trigger="click" hx-get="/getparseform" hx-target="#content" hx-swap="innerHTML">
               Parse zi string
             </li>
@@ -64,7 +78,7 @@
     </div><!-- end layout-wrapper -->
     <div id="footer">
 		See source code at
-		<a href="https://github.com/francisstephan/character_dictionary_manager" target="_blank">
+		<a href="https://github.com/francisstephan/rust_character_dictionary" target="_blank">
 			https://github.com/francisstephan</a>
         <br /><br />
         For other languages, see also
@@ -74,6 +88,14 @@
 	</div><!-- end footer -->
 
     <script>
+      function hidemenu(menu) {
+        //document.getElementById(menu).style.visibility='hidden';
+        document.getElementById(menu).style.opacity=0; // use opacity for hiding
+      }
+      function enablemenu(menu) {
+        //document.getElementById(menu).style.visibility='visible';
+        document.getElementById(menu).style.opacity=1;
+      }
       function shortkey(e) {
         if (e.keyCode == 80)
           htmx.ajax("GET", "/getpyform", {target: "#content", swap: "innerHTML",}); // key p : pinyin => zi

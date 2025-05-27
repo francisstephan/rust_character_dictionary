@@ -162,6 +162,11 @@ pub async fn readdic(data: &Data<AppState>, whereclause: &str) -> Vec<Zi> {
     read_query(query, &data).await
 }
 
+pub async fn revreaddic(data: &Data<AppState>) -> Vec<Zi> {
+    let query = "SELECT id, pinyin_ton, unicode, sens, strokes FROM pyhz ORDER by id DESC";
+    read_query(query, &data).await
+}
+
 pub async fn list_for_zi(data: Data<AppState>, first: String) -> Vec<Zi> {
     let whereclause = format!(" unicode = '{}' ORDER BY pinyin_ton", &first);
     readdic(&data, &whereclause).await

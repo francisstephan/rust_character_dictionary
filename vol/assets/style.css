@@ -46,14 +46,14 @@ ul.navig li {
   border: 2px solid transparent;
   border-radius: 5px;
   padding: 10px;
-  transition: background 0.2s;
+  background: #666;
+  transition: background 0.5s;
   display: block;
   text-align: center;
   margin: 0;
   float: left;
   height: 22px;
   padding: 4px 10px 0 10px;
-  background: #666;
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -89,20 +89,17 @@ ul.navig li ul li span {
 ul.navig li:hover {
   background: #EC4138;
   border: 2px solid #F05749;
-  border-right: 2px solid #E02A21;
-  border-bottom: 2px solid #E02A21;
 }
 ul.navig li:hover ul {
   visibility: visible;
   opacity: 1;
-  box-shadow: 0px 3px 5px 2px #EBECF1;
 }
-ul#manage li {
-  height: 30px;
+ul#manage li, ul#lists li.shortitem {
+  height: 22px;
 }
 
-ul#manage li span {
-  line-height: 30px;
+ul#manage li span, ul#lists li.shortitem span {
+  line-height: 22px;
 }
 
 h1.title {
