@@ -47,19 +47,6 @@
             Cancel
         </button>
     </form>
-    <script>
-        function displayChar() {
-            var s = document.getElementById("unicode");
-            document.getElementById("viewcar").innerHTML = String.fromCharCode(
-                parseInt(s.value, 16),
-            );
-        }
-        document
-            .getElementById("unicode")
-            .addEventListener("keyup", displayChar);
-        document
-            .getElementById("unicode")
-            .addEventListener("change", displayChar);
-    </script>
+
     {% endif %}
 </div>
