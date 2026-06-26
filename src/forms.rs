@@ -51,7 +51,8 @@ pub fn strform() -> String {
 pub fn addziform() -> String {
     // Cancel button : cf. https://alchemists.io/projects/htmx-remove
     let form = r##"
-	  <form id="addziform" class="multi" hx-post="/addzi" hx-target="#content" hx-swap="innerHTML">
+	  <form id="addziform" class="multi" hx-post="/addzi" hx-target="#content"
+		  autocomplete="off" hx-swap="innerHTML">
 	      <p id="formhead">Add character to dictionary :</p>
 		  <input type="hidden" id="id" name="id" value="0">
 		  <label for="pinyin_ton">Pinyin+tone (using pattern ^[a-z,ü]+[0-4]) :</label>

@@ -26,7 +26,9 @@ async fn main() -> std::io::Result<()> {
     log::debug!("Starting Server");
 
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+
     let pool = SqlitePool::connect(&database_url).await.unwrap();
+
     let tera = Data::new(Tera::new("./vol/templates/**/*.html").unwrap());
 
     HttpServer::new(move || {

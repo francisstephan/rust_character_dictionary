@@ -17,53 +17,57 @@
         <div id="nav">
           <ul class="navig">
             <li hx-trigger="click" hx-get="/size" hx-target="#content" hx-swap="innerHTML">
-                Size
+              Size
             </li>
-            <li onmouseover="enablemenu('lists')" onmouseout="hidemenu('lists')">Get lists
+            <li onmouseover="enablemenu('lists')" onmouseout="hidemenu('lists')">
+              Get lists
               <!-- onmouseover to restore the hover behavior after hx-on visbility cancellation -->
               <ul id="lists">
                 <li hx-trigger="click" hx-get="/getziform" hx-target="#content" hx-swap="innerHTML"
-                  hx-on::before-request ="hidemenu('lists')">
+                    hx-on::before-request="hidemenu('lists')">
                   Zi => Pinyin (shortcut = z)
                 </li>
                 <li hx-trigger="click" hx-get="/getpyform" hx-target="#content" hx-swap="innerHTML"
-                  hx-on::before-request ="hidemenu('lists')">
+                    hx-on::before-request="hidemenu('lists')">
                   Pinyin => Zi (shortcut = p)
                 </li>
                 <li hx-trigger="click" hx-get="/getstrform" hx-target="#content" hx-swap="innerHTML"
-                  hx-on::before-request ="hidemenu('lists')">
+                    hx-on::before-request="hidemenu('lists')">
                   Strokes => Zi (shortcut = s)
-		            </li>
+                </li>
                 <li class="shortitem" hx-trigger="click" hx-get="/listdic" hx-target="#content" hx-swap="innerHTML"
-                  hx-on::before-request ="hidemenu('lists')">
+                    hx-on::before-request="hidemenu('lists')">
                   <span>List dictionary</span>
                 </li>
                 <li class="shortitem" hx-trigger="click" hx-get="/listrev" hx-target="#content" hx-swap="innerHTML"
-                  hx-on::before-request ="hidemenu('lists')">
+                    hx-on::before-request="hidemenu('lists')">
                   <span>Reverse list</span>
                 </li>
-              </ul>
-            </li>
-            <li onmouseover="enablemenu('manage')" onmouseout="hidemenu('manage')">Manage dictionary
+              </ul><!-- end "lists" ul -->
+            </li><!-- end "lists" li -->
+
+            <li onmouseover="enablemenu('manage')" onmouseout="hidemenu('manage')">
+              Manage dictionary
+              <!-- onmouseover to restore the hover behavior after hx-on visbility cancellation -->
               <ul id="manage">
-		            <li hx-trigger="click" hx-get="/getaddziform" hx-target="#content" hx-swap="innerHTML"
-                  hx-on::before-request ="hidemenu('manage')">
+                <li hx-trigger="click" hx-get="/getaddziform" hx-target="#content" hx-swap="innerHTML"
+                    hx-on::before-request="hidemenu('manage')">
                   <span>Add zi</span>
                 </li>
                 <li hx-trigger="click" hx-get="/getselupdate" hx-target="#content" hx-swap="innerHTML"
-                  hx-on::before-request ="hidemenu('manage')">
+                    hx-on::before-request="hidemenu('manage')">
                   <span>Update zi</span>
                 </li>
                 <li hx-trigger="click" hx-get="/showlast" hx-target="#content" hx-swap="innerHTML"
-                  hx-on::before-request ="hidemenu('manage')">
+                    hx-on::before-request="hidemenu('manage')">
                   <span>Show last zi</span>
                 </li>
                 <li hx-trigger="click" hx-get="/getseldelete" hx-target="#content" hx-swap="innerHTML"
-                  hx-on::before-request ="hidemenu('manage')">
+                    hx-on::before-request="hidemenu('manage')">
                   <span>Delete zi</span>
                 </li>
-              </ul>
-            </li>
+              </ul><!-- end "manage" ul -->
+            </li><!-- end "manage" li -->
 
             <li class="menuitem" hx-trigger="click" hx-get="/getparseform" hx-target="#content" hx-swap="innerHTML">
               Parse zi string
@@ -74,66 +78,67 @@
       <div style="clear: both"></div>
       <h1 class="title">Manage character dictionary</h1>
       <p id="describe">Create, read, update and delete dictionary entries<br /></p>
-	  {% block content %} {% endblock content %}
-    </div><!-- end layout-wrapper -->
-    <div id="footer">
-		See source code at
-		<a href="https://github.com/francisstephan/rust_character_dictionary" target="_blank">
-			https://github.com/francisstephan</a>
-        <br /><br />
-        For other languages, see also
-	    <a href="https://www.eludev.fr/keyboards/" target="_blank">
-			https://www.eludev.fr/keyboards/</a>
 
-	</div><!-- end footer -->
+            {% block content %} {% endblock content %}
+    </div><!-- end layout-wrapper -->
+
+    <div id="footer">
+      See source code at
+        <a href="https://github.com/francisstephan/rust_character_dictionary" target="_blank">
+          https://github.com/francisstephan</a>
+            <br /><br />
+      For other languages, see also
+        <a href="https://www.eludev.fr/keyboards/" target="_blank">
+          https://www.eludev.fr/keyboards/</a>
+    </div><!-- end footer -->
 
     <script>
       function hidemenu(menu) {
-        //document.getElementById(menu).style.visibility='hidden';
-        document.getElementById(menu).style.opacity=0; // use opacity for hiding
+                //document.getElementById(menu).style.visibility='hidden';
+                document.getElementById(menu).style.opacity = 0; // use opacity for hiding
       }
       function enablemenu(menu) {
-        //document.getElementById(menu).style.visibility='visible';
-        document.getElementById(menu).style.opacity=1;
+                //document.getElementById(menu).style.visibility='visible';
+                document.getElementById(menu).style.opacity = 1;
       }
       function shortkey(e) {
-        if (e.keyCode == 80)
-          htmx.ajax("GET", "/getpyform", {target: "#content", swap: "innerHTML",}); // key p : pinyin => zi
-        if (e.keyCode == 83)
-          htmx.ajax("GET", "/getstrform", {target: "#content", swap: "innerHTML",}); // key s : strokes => zi
-        if (e.keyCode == 90)
-          htmx.ajax("GET", "/getziform", {target: "#content", swap: "innerHTML",}); // key z : zi => pinyin
+        if (e.keyCode == 80) // key p : pinyin => zi
+          htmx.ajax("GET", "/getpyform", {target: "#content", swap: "innerHTML",});
+        if (e.keyCode == 83) // key s : strokes => zi
+          htmx.ajax("GET", "/getstrform", {target: "#content", swap: "innerHTML",});
+        if (e.keyCode == 90) // key z : zi => pinyin
+          htmx.ajax("GET", "/getziform", {target: "#content", swap: "innerHTML",});
       }
       function esckey(e) {
-        if (e.keyCode == 27)
-          htmx.ajax("GET", "/cancel", {target: "#content", swap: "innerHTML",}); // key esc : cancel form
+        if (e.keyCode == 27) // key esc : cancel form
+          htmx.ajax("GET", "/cancel", {target: "#content", swap: "innerHTML",});
       }
       function ajustkey() {
         contenu = document.getElementById("content");
         if (contenu.innerHTML.includes("<form ")) {
-          // if form, authorize Esc and remove z, s and p listeners
-          document.body.removeEventListener("keydown", shortkey);
-          document.body.addEventListener("keydown", esckey);
+                    // if form, authorize Esc and remove z, s and p listeners
+                    document.body.removeEventListener("keydown", shortkey);
+                    document.body.addEventListener("keydown", esckey);
         } else {
-          // if not form, remove Esc (there is nothing to cancel) and add z and p listeners
-          document.body.addEventListener("keydown", shortkey);
-          document.body.removeEventListener("keydown", esckey);
+                    // if not form, remove Esc (there is nothing to cancel) and add z, s and p listeners
+                    document.body.addEventListener("keydown", shortkey);
+                    document.body.removeEventListener("keydown", esckey);
         }
       }
       window.onload = function () {
         elem = document.body;
-        elem.addEventListener("keydown", shortkey); // initially enable z and p shortcut keys
+        elem.addEventListener("keydown", shortkey); // initially enable z, s and p shortcut keys
         elem.addEventListener("htmx:afterRequest", ajustkey);
-		// after ajax request performed by htmx, adjust keydown listeners
+        // after ajax request performed by htmx, adjust keydown listeners
         elem.addEventListener("htmx:afterRequest", function (evt) {
-          contenu = document.getElementById("content");
-          if (evt.detail.failed && evt.detail.xhr) {
-            // display error message within the document (and not only the console)
-            // Server error with response contents, equivalent to htmx:responseError
-            console.warn("Server error", evt.detail);
-            const xhr = evt.detail.xhr;
-            contenu.innerHTML = `Unexpected server error: ${xhr.status} - ${xhr.statusText}`;
-          }
+                    contenu = document.getElementById("content");
+                    if (evt.detail.failed && evt.detail.xhr) {
+                        // display error message within the document (and not only the console)
+                        // Server error with response contents, equivalent to htmx:responseError
+                        console.warn("Server error", evt.detail);
+                        const xhr = evt.detail.xhr;
+                        contenu.innerHTML = `Unexpected server error: ${xhr.status} - ${xhr.statusText}`;
+                    }
         });
       };
     </script>
